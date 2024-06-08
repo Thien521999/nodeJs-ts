@@ -1,0 +1,29 @@
+## Một số thuật ngữ trong MongDB
+
+- Cấp độ cao nhất là Organizations
+- 1 Organizations có thể có nhiều project
+- 1 project có thể có nhiều cluster
+- 1 cluster có thể có nhiều database
+- Trong mỗi database chúng ta lại có các collection
+- Mỗi collection lại có nhiều document
+
+Cluster có thể hiểu là một server vps, dùng để cài đặt mongodb.Từ đó chúng ta
+có thể tạo thêm nhiều database trên cái server đó
+
+Collection tương đưỡng với bảng bên SQL
+Document tượng đương hàng bên SQL
+
+## MVC
+- Controller: tiếp nhận xử lý request(xử lý logic)
+- Model: xử lý database
+- View: hiển thị cho người dùng
+
+
+## Error handling
+- Gọi `next()` để chuyển request sang request handler tiếp theo
+- Gọi `next(err)` để chuyển sang error handller tiếp theo
+
+Khi xảy ra lỗi trong synchronous handler thì phải gọi `next(err)` để chuyển sang
+error handler
+
+## Error handler
