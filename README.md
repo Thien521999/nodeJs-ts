@@ -27,3 +27,30 @@ Khi xảy ra lỗi trong synchronous handler thì phải gọi `next(err)` để
 error handler
 
 ## Error handler
+
+## Format lỗi trả về cho người dùng
+
+Chúng ta nên thống nhất format lỗi trả về cho người dùng
+
+Lỗi thường
+
+```ts
+{
+    message: string
+    error_info?: any
+}
+```
+
+Lỗi validation (422)
+
+```ts
+{
+    message: string,
+    errors: {
+        [field: string]: {
+            msg: string
+            [key: string]: any
+        }
+    }
+}
+```

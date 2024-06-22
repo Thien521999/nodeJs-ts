@@ -1,20 +1,19 @@
 import dotenv from 'dotenv'
-import express, { NextFunction, Request, Response } from 'express'
+import express from 'express'
+import { defaultErrorHandler } from './middlewares/error.middlewares'
 import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
 dotenv.config()
 
+databaseService.connect()
 const app = express()
 const port = 3000
 
 app.use(express.json())
 // middlewares
 app.use('/users', usersRouter)
-databaseService.connect()
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.status(400).json({ error: err.message })
-})
+app.use(defaultErrorHandler)
 
 // run().catch(console.dir)
 
