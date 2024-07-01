@@ -23,5 +23,12 @@ export const USERS_MESSAGES = {
   DATE_OF_BIRTH_MUST_BE_ISO8601: 'Date of birth must be ISO8601',
   LOGIN_SUCCESS: 'Login success',
   REGISTER_SUCCESS: 'Register success',
-  ACCESS_TOKEN_IS_REQUIRED: 'Access token is requried'
+  ACCESS_TOKEN_IS_REQUIRED: 'Access token is requried',
+  REFRESH_TOKEN_IS_REQUIRED: 'Reresh token is requried',
+  REFRESH_TOKEN_IS_INVALID: 'Reresh token is invalid',
+  USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
+  LOGOUT_SUCCESS: 'Logout success',
+  EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
+  EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verify before',
+  EMAIL_VERIFY_SUCCESS: 'Email verify success'
 } as const // as const de khoi thay doi message nay
