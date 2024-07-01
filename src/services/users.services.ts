@@ -96,6 +96,8 @@ class UsersService {
     }
   }
   async verifyEmail(user_id: string) {
+    // Tạo giá trị cập nhật // ex: new Date()
+    // MongoDB cập nhật giá trị // ex: currentDate
     const [token] = await Promise.all([
       this.signAccessAndRefreshToken(user_id),
       databaseService.users.updateOne(
@@ -105,8 +107,11 @@ class UsersService {
         {
           $set: {
             email_verify_token: '',
-            verify: userVerifyStatus.Verified,
-            updated_at: new Date()
+            verify: userVerifyStatus.Verified
+            // updated_at: new Date()
+          },
+          $currentDate: {
+            updated_at: true
           }
         }
       )
