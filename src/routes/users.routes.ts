@@ -4,11 +4,13 @@ import {
   loginController,
   logoutController,
   registerController,
-  resendVerifyEmailController
+  resendVerifyEmailController,
+  forgotPasswordController
 } from '~/controllers/users.controllers'
 import {
   accessTokenValidator,
   emailVerifyTokenValidator,
+  forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator
@@ -57,5 +59,23 @@ usersRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(
  * Body: {}
  */
 usersRouter.post('/resend-verify-email', accessTokenValidator, wrapRequestHandler(resendVerifyEmailController))
+
+/*
+ * Desciption. Submit email to reset password, send email to user
+ * Path: /forgot-password
+ * Method: POST
+ * Header: { email: string }
+ * Body: {}
+ */
+usersRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
+
+/*
+ * Desciption.
+ * Path: /verify-forgot-password
+ * Method: POST
+ * Header: { }
+ * Body: {}
+ */
+usersRouter.post('/verify-forgot-password', forgotPasswordValidator, wrapRequestHandler(forgotPasswordController))
 
 export default usersRouter
