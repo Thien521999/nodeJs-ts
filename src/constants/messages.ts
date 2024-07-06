@@ -36,5 +36,6 @@ export const USERS_MESSAGES = {
   FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password is required',
   VERIFY_FORFOT_PASSWORD_SUCCESS: 'Verify forgot password success',
   INVALID_FORFOT_PASSWORD: 'Invalid forgot password token',
-  RESET_PASSWORD_SUCCESS: 'Reset password success'
+  RESET_PASSWORD_SUCCESS: 'Reset password success',
+  GET_My_PROFILE_SUCCESS: 'Get my profile success'
 } as const // as const de khoi thay doi message nay
