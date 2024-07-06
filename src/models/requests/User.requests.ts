@@ -28,6 +28,12 @@ export interface ForgotPasswordReqBody {
 
 export interface VerifyForgotPasswordReqBody {}
 
+export interface ResetPasswordReqBody {
+  password: string
+  confirn_password: string
+  forgot_password_token: string
+}
+
 export interface TokenPayload extends JwtPayload {
   user_id: string
   token_type: TokenType
