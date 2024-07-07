@@ -37,5 +37,6 @@ export const USERS_MESSAGES = {
   VERIFY_FORFOT_PASSWORD_SUCCESS: 'Verify forgot password success',
   INVALID_FORFOT_PASSWORD: 'Invalid forgot password token',
   RESET_PASSWORD_SUCCESS: 'Reset password success',
-  GET_My_PROFILE_SUCCESS: 'Get my profile success'
+  GET_My_PROFILE_SUCCESS: 'Get my profile success',
+  USER_NOT_VERIFIED: 'User not verified'
 } as const // as const de khoi thay doi message nay

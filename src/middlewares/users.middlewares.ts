@@ -1,10 +1,13 @@
+import { NextFunction, Request, Response } from 'express'
 import { ParamSchema, checkSchema } from 'express-validator'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { capitalize } from 'lodash'
 import { ObjectId } from 'mongodb'
+import { userVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Error'
+import { TokenPayload } from '~/models/requests/User.requests'
 import databaseService from '~/services/database.services'
 import usersService from '~/services/users.services'
 import { hashPassword } from '~/utils/crypto'
@@ -237,12 +240,19 @@ export const accessTokenValidator = validate(
                 status: HTTP_STATUS.UNAUTHORIZED
               })
             }
-            const decoded_authorization = await verifyToken({
-              token: access_token,
-              secretOrPublicKey: process.env.JWT_SECRET_ACCESS_TOKEN as string
-            })
+            try {
+              const decoded_authorization = await verifyToken({
+                token: access_token,
+                secretOrPublicKey: process.env.JWT_SECRET_ACCESS_TOKEN as string
+              })
 
-            req.decoded_authorization = decoded_authorization
+              ;(req as Request).decoded_authorization = decoded_authorization
+            } catch (error) {
+              throw new ErrorWithStatus({
+                message: capitalize((error as JsonWebTokenError).message),
+                status: HTTP_STATUS.UNAUTHORIZED
+              })
+            }
             return true
           }
         }
@@ -422,3 +432,16 @@ export const resetPasswordValidator = validate(
     ['body']
   )
 )
+
+export const verifiedUserValidator = (req: Request, res: Response, next: NextFunction) => {
+  const { verify } = req.decoded_authorization as TokenPayload
+  if (verify !== userVerifyStatus.Verified) {
+    return next(
+      new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_VERIFIED,
+        status: HTTP_STATUS.FORBIDDEN
+      })
+    )
+  }
+  next()
+}
