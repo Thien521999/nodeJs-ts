@@ -38,5 +38,16 @@ export const USERS_MESSAGES = {
   INVALID_FORFOT_PASSWORD: 'Invalid forgot password token',
   RESET_PASSWORD_SUCCESS: 'Reset password success',
   GET_My_PROFILE_SUCCESS: 'Get my profile success',
-  USER_NOT_VERIFIED: 'User not verified'
+  USER_NOT_VERIFIED: 'User not verified',
+  BIO_MUST_BE_STRING: 'Bio must be string',
+  BIO_LENGTH: 'Name must be from 1 to 200',
+  LOCATION_MUST_BE_STRING: 'Location must be string',
+  LOCATION_LENGTH: 'Location must be from 1 to 200',
+  WEBSITE_MUST_BE_STRING: 'Website must be string',
+  WEBSITE_LENGTH: 'Website must be from 1 to 200',
+  USERNAME_MUST_BE_STRING: 'User name must be string',
+  USERNAME_LENGTH: 'User name must be from 1 to 50',
+  IMAGE_URL_MUST_BE_STRING: 'Cover photo must be string',
+  IMAGE_URL_LENGTH: 'Avatar must be from 1 to 400',
+  UPDATE_ME_SUCCESS: 'Update me success'
 } as const // as const de khoi thay doi message nay
