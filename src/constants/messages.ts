@@ -49,5 +49,8 @@ export const USERS_MESSAGES = {
   USERNAME_LENGTH: 'User name must be from 1 to 50',
   IMAGE_URL_MUST_BE_STRING: 'Cover photo must be string',
   IMAGE_URL_LENGTH: 'Avatar must be from 1 to 400',
-  UPDATE_ME_SUCCESS: 'Update me success'
+  UPDATE_ME_SUCCESS: 'Update me success',
+  FOLLOW_SUCCESS: 'Follow success',
+  INVALID_FOLLOWED_USER_ID: 'Invalid followed user id',
+  FOLLOWED: 'Followed'
 } as const // as const de khoi thay doi message nay
