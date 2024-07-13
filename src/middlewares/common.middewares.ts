@@ -7,4 +7,5 @@ export const fiterMiddeware =
   <T>(fiterKeys: FiterKeys<T>) =>
   (req: Request, res: Response, next: NextFunction) => {
     req.body = pick(req.body, fiterKeys)
+    next()
   }

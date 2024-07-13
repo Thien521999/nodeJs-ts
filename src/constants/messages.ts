@@ -45,8 +45,9 @@ export const USERS_MESSAGES = {
   LOCATION_LENGTH: 'Location must be from 1 to 200',
   WEBSITE_MUST_BE_STRING: 'Website must be string',
   WEBSITE_LENGTH: 'Website must be from 1 to 200',
-  USERNAME_MUST_BE_STRING: 'User name must be string',
-  USERNAME_LENGTH: 'User name must be from 1 to 50',
+  USERNAME_MUST_BE_STRING: 'User name must be a string',
+  USERNAME_INVALID:
+    'User name must be 4-15 characters long and contain only letters, numbers, underscores, not only numbers',
   IMAGE_URL_MUST_BE_STRING: 'Cover photo must be string',
   IMAGE_URL_LENGTH: 'Avatar must be from 1 to 400',
   UPDATE_ME_SUCCESS: 'Update me success',
@@ -54,5 +55,6 @@ export const USERS_MESSAGES = {
   INVALID_USER_ID: 'Invalid user id',
   FOLLOWED: 'Followed',
   ALREADY_UNFOLLOWED: 'Already unfollowed',
-  UNFOLLOW_SUCCESS: 'Unfollow success'
+  UNFOLLOW_SUCCESS: 'Unfollow success',
+  USERNAME_EXISTED: 'Username existed'
 } as const // as const de khoi thay doi message nay
