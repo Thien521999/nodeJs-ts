@@ -51,6 +51,8 @@ export const USERS_MESSAGES = {
   IMAGE_URL_LENGTH: 'Avatar must be from 1 to 400',
   UPDATE_ME_SUCCESS: 'Update me success',
   FOLLOW_SUCCESS: 'Follow success',
-  INVALID_FOLLOWED_USER_ID: 'Invalid followed user id',
-  FOLLOWED: 'Followed'
+  INVALID_USER_ID: 'Invalid user id',
+  FOLLOWED: 'Followed',
+  ALREADY_UNFOLLOWED: 'Already unfollowed',
+  UNFOLLOW_SUCCESS: 'Unfollow success'
 } as const // as const de khoi thay doi message nay
