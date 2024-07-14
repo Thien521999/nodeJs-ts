@@ -54,3 +54,8 @@ Lỗi validation (422)
     }
 }
 ```
+
+## Chương: Xử lý media
+
+1. folder `uploads` nên bỏ vào `.gitignore` vì đẩy lên git sẽ khá nặng
+2. Để folder `uploads` trong máy tính local sẽ ko thể share file với mọi người => Giải pháp là upload lên 1 nền tảng như S3, hoặc upload lên server của chúng ta.
