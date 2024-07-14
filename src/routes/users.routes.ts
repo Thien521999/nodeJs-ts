@@ -11,11 +11,14 @@ import {
   getMeController,
   updateMeController,
   followController,
-  unFollowController
+  unFollowController,
+  changePasswordController,
+  oauthController
 } from '~/controllers/users.controllers'
 import { fiterMiddeware } from '~/middlewares/common.middewares'
 import {
   accessTokenValidator,
+  changePasswordValidator,
   emailVerifyTokenValidator,
   followValidator,
   forgotPasswordValidator,
@@ -39,6 +42,13 @@ const usersRouter = Router()
  * Body: { email:string, password:string }
  */
 usersRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
+
+/*
+ * Desciption. Login with google
+ * Path: /oauth/google
+ * Method: POST
+ */
+usersRouter.get('/oauth/google', wrapRequestHandler(oauthController))
 
 /*
  * Desciption. Register a new user
@@ -165,6 +175,21 @@ usersRouter.delete(
   verifiedUserValidator,
   unFollowValidator,
   wrapRequestHandler(unFollowController)
+)
+
+/*
+ * Desciption. Change password
+ * Path: /change-password
+ * Method: PUT
+ * Header: { Authorization: Bearer <access_token> }
+ * Body: {old_password: string, password: string, confirm_password: string}
+ */
+usersRouter.put(
+  '/change-password',
+  accessTokenValidator,
+  verifiedUserValidator,
+  changePasswordValidator,
+  wrapRequestHandler(changePasswordController)
 )
 
 export default usersRouter
