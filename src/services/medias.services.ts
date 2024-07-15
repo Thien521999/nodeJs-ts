@@ -11,15 +11,11 @@ class MediasService {
     const file = await handleUploadSingleImage(req)
     const newName = getNameFromFullName(file.newFilename)
     const newPath = path.resolve(UPLOAD_DIR, `${newName}.jpg`)
-    await sharp(file.filepath)
-      .jpeg()
-      .toFile(newPath, (err, info) => {
-        // console.log({ err })
-      })
+    await sharp(file.filepath).jpeg().toFile(newPath)
     fs.unlinkSync(file.filepath)
     return isProduction
-      ? `${process.env.HOST}/medias/${newName}.jpg`
-      : `http://localhost:${process.env.PORT}/medias/${newName}.jpg`
+      ? `${process.env.HOST}/static/${newName}.jpg`
+      : `http://localhost:${process.env.PORT}/static/${newName}.jpg`
   }
 }
 
