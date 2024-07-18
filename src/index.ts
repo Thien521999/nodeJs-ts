@@ -5,7 +5,7 @@ import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
 import mediasRouter from './routes/medias.router'
 import { initFolder } from './utils/file'
-import { UPLOAD_DIR } from './constants/dir'
+import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir'
 import staticRouter from './routes/static.router'
 dotenv.config()
 
@@ -21,8 +21,9 @@ app.use(express.json())
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
 app.use('/static', staticRouter)
+app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 
-// app.use('/static', express.static(UPLOAD_DIR))
+// app.use('/static', express.static(UPLOAD_IMAGE_DIR))
 
 app.use(defaultErrorHandler)
 
