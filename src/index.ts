@@ -7,9 +7,12 @@ import staticRouter from './routes/static.router'
 import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
 import { initFolder } from './utils/file'
+import { MongoClient } from 'mongodb'
 dotenv.config()
 
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexUsers()
+})
 const app = express()
 const port = process.env.PORT || 4000
 
@@ -32,3 +35,25 @@ app.use(defaultErrorHandler)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+// // add data
+// const mgclient = new MongoClient(
+//   `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@twitter.rhknwv4.mongodb.net/?retryWrites=true&w=majority&appName=Twitter`
+// )
+// const db = mgclient.db('earth')
+// // Tao 1000 document vao collection users
+// const users = db.collection('users')
+// const usersData = []
+// function getRandomNumber() {
+//   return Math.floor(Math.random() * 100) + 1
+// }
+
+// for (let i = 0; i < 1000; i++) {
+//   usersData.push({
+//     name: 'user' + (i + 1),
+//     age: getRandomNumber(),
+//     sex: i % 2 === 0 ? 'male' : 'female',
+//     address: ''
+//   })
+// }
+// users.insertMany(usersData)
