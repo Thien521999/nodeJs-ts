@@ -13,7 +13,8 @@ import {
   followController,
   unFollowController,
   changePasswordController,
-  oauthController
+  oauthController,
+  refreshTokenController
 } from '~/controllers/users.controllers'
 import { fiterMiddeware } from '~/middlewares/common.middewares'
 import {
@@ -65,7 +66,15 @@ usersRouter.post('/register', registerValidator, wrapRequestHandler(registerCont
  * Header: { Authorization: Bearer <access_token> }
  * Body: { refresh_token: string}
  */
-usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logoutController))
+usersRouter.post('/', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logoutController))
+
+/*
+ * Desciption. Refresh Token
+ * Path: /refresh-token
+ * Method: POST
+ * Header: { refresh_token: string }
+ */
+usersRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
 
 /*
  * Desciption. Verify email when user client click on the link email
