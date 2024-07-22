@@ -12,6 +12,8 @@ dotenv.config()
 
 databaseService.connect().then(() => {
   databaseService.indexUsers()
+  databaseService.indexRefreshTokens()
+  databaseService.indexFollowers()
 })
 const app = express()
 const port = process.env.PORT || 4000
