@@ -25,17 +25,26 @@ class DatabaseService {
     }
   }
 
-  indexUsers() {
-    this.users.createIndex({ email: 1, password: 1 })
-    this.users.createIndex({ email: 1 }, { unique: true })
-    this.users.createIndex({ username: 1 }, { unique: true })
+  async indexUsers() {
+    const exists = await this.users.indexExists(['email_1_password_1', 'username_1', 'email_11'])
+    if (!exists) {
+      this.users.createIndex({ email: 1, password: 1 })
+      this.users.createIndex({ email: 1 }, { unique: true })
+      this.users.createIndex({ username: 1 }, { unique: true })
+    }
   }
-  indexRefreshTokens() {
-    this.refreshToken.createIndex({ token: 1 })
-    this.refreshToken.createIndex({ exp: 1 }, { expireAfterSeconds: 0 }) // Dua vao moc thoi gian exp het han se xoa di //TTL: Time To Live
+  async indexRefreshTokens() {
+    const exists = await this.refreshToken.indexExists(['token_1', 'exp_1'])
+    if (!exists) {
+      this.refreshToken.createIndex({ token: 1 })
+      this.refreshToken.createIndex({ exp: 1 }, { expireAfterSeconds: 0 }) // Dua vao moc thoi gian exp het han se xoa di //TTL: Time To Live
+    }
   }
-  indexFollowers() {
-    this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
+  async indexFollowers() {
+    const exists = await this.followers.indexExists(['user_id_1_followed_user_id_1'])
+    if (!exists) {
+      this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
+    }
   }
 
   get users(): Collection<User> {
