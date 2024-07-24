@@ -169,3 +169,15 @@ Sẽ có 2 trường hợp
 
 ### Khi tôi logout, tôi chỉ cần xóa access token và refresh token ở bộ nhớ của client là được chứ?
 Nếu bạn không gọi api logout mà đơn thuần chỉ xóa access token và refresh token ở bộ nhớ của client thì bạn vẫn sẽ logout được, nhưng sẽ không tốt cho hệ thống về mặt bảo mật. Vì refresh token vẫn còn tồn tại ở database, nếu hacker có thể lấy được refresh token của bạn thì họ vẫn có thể lấy được access token mới.
+
+
+### Tối ưu khác
+
+Ngoài việc index thì dưới đây là 1 số tips để các bạn có thể tối ưu hơn.
+
+- Phân tích câu truy vấn với `explain`
+
+- Dùng MongoDB Driver lúc nào cũng nhanh hơn dùng các ODM(ORM) như Mongoose, Prisma
+vì nó bỏ qua lớp ảo hoá và truy vấn trực tiếp vào database.
+
+- Để server MongoDB gần với Server của bạn nhất có thể.
