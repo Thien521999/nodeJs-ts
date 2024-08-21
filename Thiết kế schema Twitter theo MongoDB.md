@@ -69,8 +69,12 @@ enum TweetType {
 }
 ```
 
+## Luồng tạo 1 tweet
+Ở đây mình sẽ giả sử một trường hợp tạo tweet đầy đủ hashtag, mentions và media
+
+Một body đầy đủ sẽ như thế này
+
 ```ts
-// mot body day du gui len api
 interface TweetRequestBody {
   type: TweetType
   audience: TweetAudience // doi tuong khan gia
@@ -81,3 +85,15 @@ interface TweetRequestBody {
   medias: Media[]
 }
 ```
+
+### Validate Tweet body
+
+Nếu mà validate pass 100% case của tweet thì tất tốn time, nên m sẽ validate những case chính. Tất nhiên nó sẽ dính 1 số case hiếm gặp, các bạn phát hiện thì tự bổ sung v nha.
+
+- `type` phải là 1 trong 4 loai `TweetType`
+- `audience` phải là 1 trong 2 loại `TweetAudience`
+- Nếu `type` là retweet, comment, quotetweet thì `parent_id` phải là `tweet_id` của  tweet cha, nếu `type` là tweet thì `parent_id` thì phải là `null`
+- Nếu `type` là retweet thì `content` phải là `''`. Nếu `type` là comment, quotetweet, tweet và ko có `mentions` và `hashtags` thì `content` phải là string và ko dc rỗng.
+- `hashtags` phải là mảng các string
+- `mentions` phải là mảng các string dạng id
+- `medias` phải là mảng các `Media`

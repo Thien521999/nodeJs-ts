@@ -8,6 +8,7 @@ import usersRouter from './routes/users.routes'
 import databaseService from './services/database.services'
 import { initFolder } from './utils/file'
 import { MongoClient } from 'mongodb'
+import tweetsRouter from './routes/tweets.routes'
 dotenv.config()
 
 databaseService.connect().then(() => {
@@ -25,6 +26,8 @@ app.use(express.json())
 // middlewares
 app.use('/users', usersRouter)
 app.use('/medias', mediasRouter)
+app.use('/tweets', tweetsRouter)
+
 app.use('/static', staticRouter)
 app.use('/static/video', express.static(UPLOAD_VIDEO_DIR))
 
