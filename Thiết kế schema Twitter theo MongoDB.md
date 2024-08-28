@@ -97,3 +97,29 @@ Nếu mà validate pass 100% case của tweet thì tất tốn time, nên m sẽ
 - `hashtags` phải là mảng các string
 - `mentions` phải là mảng các string dạng id
 - `medias` phải là mảng các `Media`
+
+## bookmarks
+
+Bookmarks các tweet lại, mỗi user ko giới hạn số lượng bookmark.Sỡ dĩ ko cần `updated_at` là vì trong trường hợp người dùng unbookmark thì chúng ta sẽ xoá document này đi
+
+```ts
+interface BookMarks {
+  _id: ObjectId
+  user_id: ObjectId
+  tweet_id: ObjectId
+  created_at: Date
+}
+```
+
+## likes
+
+Tương tự `bookmarks` thì chúng ta có collections `likes`
+
+```ts
+interface Like {
+  _id: ObjectId
+  user_id: ObjectId
+  tweet_id: ObjectId
+  created_at: Date
+}
+```
