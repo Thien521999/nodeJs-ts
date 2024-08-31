@@ -1,12 +1,15 @@
+import { Request, Response, NextFunction } from 'express'
 import { checkSchema } from 'express-validator'
 import { isEmpty } from 'lodash'
 import { ObjectId } from 'mongodb'
-import { MediaType, TweetAudience, TweetType } from '~/constants/enums'
+import { MediaType, TweetAudience, TweetType, userVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
-import { TWEET_MESSAGES } from '~/constants/messages'
+import { TWEET_MESSAGES, USERS_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Error'
+import Tweet from '~/models/schemas/Tweet.schema'
 import databaseService from '~/services/database.services'
 import { numberEnumToArray } from '~/utils/common'
+import { wrapRequestHandler } from '~/utils/handlers'
 import { validate } from '~/utils/validation'
 
 const tweetTypes = numberEnumToArray(TweetType)
@@ -117,32 +120,83 @@ export const createTweetValidator = validate(
 )
 
 export const tweetIdValidator = validate(
-  checkSchema({
-    tweet_id: {
-      // isMongoId: {
-      //   errorMessage: TWEET_MESSAGES.INVALID_TWEET_ID
-      // },
-      custom: {
-        options: async (value, { req }) => {
-          if (!ObjectId.isValid(value)) {
-            throw new ErrorWithStatus({
-              message: TWEET_MESSAGES.INVALID_TWEET_ID,
-              status: HTTP_STATUS.BAD_REQUEST
-            })
-          }
+  checkSchema(
+    {
+      tweet_id: {
+        // isMongoId: {
+        //   errorMessage: TWEET_MESSAGES.INVALID_TWEET_ID
+        // },
+        custom: {
+          options: async (value, { req }) => {
+            if (!ObjectId.isValid(value)) {
+              throw new ErrorWithStatus({
+                message: TWEET_MESSAGES.INVALID_TWEET_ID,
+                status: HTTP_STATUS.BAD_REQUEST
+              })
+            }
 
-          const tweet = await databaseService.tweets.findOne({
-            _id: new ObjectId(value)
-          })
-
-          if (!tweet) {
-            throw new ErrorWithStatus({
-              message: TWEET_MESSAGES.TWEET_NOT_FOUND,
-              status: HTTP_STATUS.NOT_FOUND
+            const tweet = await databaseService.tweets.findOne({
+              _id: new ObjectId(value)
             })
+
+            if (!tweet) {
+              throw new ErrorWithStatus({
+                message: TWEET_MESSAGES.TWEET_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              })
+            }
+
+            ;(req as Request).tweet = tweet
+            return true
           }
         }
       }
-    }
-  })
+    },
+    ['params', 'body']
+  )
 )
+
+// Muon su dung async/await trong handler express thi phai co try catch
+// Neu ko dùng try catch thi phai dung wrapRequestHandler
+export const audienceValidator = wrapRequestHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const tweet = req.tweet as Tweet
+  // console.log({ tweet })
+  if (tweet.audience === TweetAudience.TwitterCircle) {
+    // kiem trang nguoi xem tweet nay da dang nhap hay chua
+    if (!req.decoded_authorization) {
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.UNAUTHORIZED,
+        message: USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED
+      })
+    }
+
+    const author = await databaseService.users.findOne({
+      _id: new ObjectId(tweet.user_id)
+    })
+    // Kiem tra tai khoan tac gia co on (bi khoa hay bi xoa chua) ko
+    if (!author || author.verify === userVerifyStatus.Banned) {
+      //Banned: BI KHOA
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: USERS_MESSAGES.USER_NOT_FOUND
+      })
+    }
+
+    // Kiem tra nguoi xem tweet nay co nam trong Twitter Circle cua tac gia hay ko
+    const { user_id } = req.decoded_authorization
+    // console.log({ author })
+    const isInTwitterCircle = author?.twitter_circle?.some((user_circle_id) => user_circle_id?.equals(user_id))
+    // console.log({ isInTwitterCircle })
+    // Nếu ban ko phai la tac gia va ko nam trong twitter circle thi quang loi
+    if (!author._id.equals(user_id) && !isInTwitterCircle) {
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.FORBIDDEN,
+        message: TWEET_MESSAGES.TWEET_IS_NOT_PUBLIC
+      })
+    }
+    // throw new ErrorWithStatus({
+    //   status: HTTP_STATUS.FORBIDDEN,
+    //   message: 'Error OTHERS'
+    // })
+  }
+})
