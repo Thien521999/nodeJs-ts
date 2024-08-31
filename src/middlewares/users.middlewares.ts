@@ -614,3 +614,23 @@ export const changePasswordValidator = validate(
     confirm_password: confirmPasswordSchema
   })
 )
+
+export const isUserLoggedInValidator = (middleware: (req: Request, res: Response, next: NextFunction) => void) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    // su khac biet giua req.header vs req.headers
+    // req.header: header chung, ko phan biet chu hoa va chu thuong
+    // console.log(req.header('Authorization')) => ra ket qua
+    // console.log(req.header('authorization')) => ra ket qua
+
+    // req.headers: headers nay la cua express, co quy dinh chu hoa chu thuong
+    // console.log(req.headers.authorization) => ra ket qua
+    // console.log(req.headers.Authorization) => undefined
+
+    // header trong BE ko phan biet chu hoa , chu thuong nhung trong Js thì có
+
+    if (req.headers.authorization) {
+      return middleware(req, res, next)
+    }
+    next()
+  }
+}
